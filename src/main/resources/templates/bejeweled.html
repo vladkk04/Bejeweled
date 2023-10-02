@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello</title>
+  <link href="/css/style.css" rel="stylesheet" />
+</head>
+
+<header>
+  <p id="headerText">Bejeweled</p>
+</header>
+
+<body>
+ <div id="infoGame">
+    <div id="gameScore">
+      <span>Score:<span id ="score" th:text="${getScore}"></span></span>
+    </div>
+
+    <div id="countdownTimer">
+      <span>Time:<span id = "timerCount" th:text="${timeRemaining}"></span></span>
+    </div>
+
+    <div id="topPlayerText">
+      <span>TOP PLAYERS</span>
+    </div>
+  </div>
+
+  <div id="container-board">
+    <div id="container">
+        <div id="board-container">
+          <span th:utext = "${@bejeweledController.getHtmlBoard}"></span>
+        </div>
+    </div>
+        <div>
+          <div id="TopPlayer">
+            <div id="player">
+            </div>
+            <div id="scores">
+            </div>
+          </div>
+            <div id="MiddleRating">
+                <div id="middleRat">
+
+                </div>
+            </div>
+          <div id="rating-cont"class="rating-container">
+            <form action="/bejeweled/rating" method="post">
+              <div class="rating">
+                <label for="star5" title="text">
+                  <input type="submit" id="star5" name="assessment" value="5" />
+                </label>
+                <label for="star4" title="text">
+                  <input type="submit" id="star4" name="assessment" value="4" />
+                </label>
+                <label for="star3" title="text">
+                  <input type="submit" id="star3" name="assessment" value="3" />
+                </label>
+                <label for="star2" title="text">
+                  <input type="submit" id="star2" name="assessment" value="2" />
+                </label>
+                <label for="star1" title="text">
+                  <input type="submit" id="star1" name="assessment" value="1" />
+                </label>
+              </div>
+            </form>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div id="containerCommentsAndRating">
+    <div class="comment-container">
+      <p id="leaveCommentText">Leave a Comment</p>
+      <form action="/bejeweled/comment" method="post">
+        <div class="form-group">
+          <textarea class="form-control" id="comment" name="comment" rows="2" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" id="send_btn">Submit</button>
+      </form>
+    </div>
+  </div>
+
+     <div id="AllComments">
+         <div id="comments"></div>
+     </div>
+
+</body>
+<script>
+
+  const buttons = document.getElementsByClassName("jewel-button");
+  const countdownTimer = document.getElementById("timerCount");
+  const topPlayerDiv = document.getElementById('TopPlayer');
+  const allCommentsDiv = document.getElementById('AllComments');
+  const gameScore = document.getElementById("score");
+  const board = document.getElementById("board");
+  const ratingContainer = document.getElementById("rating-cont");
+  const commentContainer = document.getElementById("containerCommentsAndRating");
+  const middleRating = document.getElementById("MiddleRating");
+
+  let count = 0;
+  let playerList = "";
+  let scoreList = "";
+  let commentList = "";
+  function updateTimer() {
+    fetch('/bejeweled/timer')
+            .then(response => response.text())
+            .then(data => {
+              countdownTimer.innerHTML = data;
+            });
+  }
+
+  setInterval(updateTimer, 1000);
+
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", function ()
+    {
+      count++;
+      fetch('bejeweled/select-jewel?' + this.getAttribute("id"),{
+        method: 'GET',
+        credentials: 'same-origin'
+      }).then(response =>
+      {
+        if(response.ok && count === 2)
+        {
+          updateBoard();
+          updateScore();
+          count = 0
+        }
+      });
+    });
+  }
+
+  function updateBoard()
+  {
+    fetch('/bejeweled/updateBoard', {
+      method: 'GET',
+      credentials: 'same-origin'
+    })
+            .then(response => response.text())
+            .then(data => {
+              board.innerHTML = data;
+              const buttons = document.getElementsByClassName("jewel-button");
+
+              for (let i = 0; i < buttons.length; i++)
+              {
+                buttons[i].addEventListener("click", function ()
+                {
+                  count++;
+                  fetch('bejeweled/select-jewel?' + this.getAttribute("id"),{
+                    method: 'GET',
+                    credentials: 'same-origin'
+                  }).then(response =>
+                  {
+                    if(response.ok && count === 2)
+                    {
+                      updateBoard();
+                      updateScore();
+                      count = 0
+                    }
+                  });
+                });
+              }
+            });
+  }
+
+  function updateScore()
+  {
+    fetch('/bejeweled/score')
+            .then(response => response.text())
+            .then(data => {
+              gameScore.innerHTML = data;
+            });
+  }
+
+  function updateTopPlayers()
+  {
+    fetch('api/player/allplayers')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Error retrieving top players.');
+              }
+              return response.json();
+            })
+            .then(players => {
+              playerList += '<p id="PLAYERS_TOP_TEXT">' + "Players" + '</p>'
+              for (var i = 1; i <= players.length; i++) {
+                playerList += '<p class="topPlayerText">' + "#"+ + i +" : " + players[i - 1].username + '</p>';
+              }
+              topPlayerDiv.querySelector('#player').innerHTML = playerList;
+
+              scoreList += '<p id="SCORES_TOP_TEXT">' + "Scores" + '</p>'
+              for (var i = 0; i < players.length; i++) {
+                scoreList += '<p class="topScoresText">' + players[i].score + '</p>';
+              }
+              topPlayerDiv.querySelector('#scores').innerHTML = scoreList;
+            })
+            .catch(error => {
+              console.error(error);
+              alert('Error retrieving top players from the server.');
+            });
+  }
+  function updateAllComments()
+  {
+      fetch('api/comment/allcomments')
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Error retrieving top players.');
+              }
+              return response.json();
+          })
+          .then(comment => {
+              commentList += '<p id="ALL_COMMENTS_TEXT">' + "Comments" + '</p>'
+              for (var i = 0; i < comment.length; i++)
+              {
+                  commentList += '<p id="AllCommentsText">'+ "User: '" + comment[i].username + "' wrote: " + comment[i].comment + '</p>';
+              }
+              allCommentsDiv.querySelector('#comments').innerHTML = commentList;
+
+          })
+          .catch(error => {
+              console.error(error);
+              alert('Error retrieving top players from the server.');
+          });
+  }
+
+  function guessBejeweled()
+  {
+      fetch('/bejeweled/guessPlayer')
+          .then(response => response.text())
+          .then(data => {
+              if(data === "guess")
+              {
+                  ratingContainer.style.display = 'none';
+                  commentContainer.style.display = 'none';
+              }
+              else
+              {
+                  ratingContainer.style.display = 'block';
+                  commentContainer.style.display = 'block';
+              }
+          });
+  }
+
+  function averageAssessment()
+  {
+      fetch('/api/rating/allratings')
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Error retrieving player ratings.');
+              }
+              return response.json();
+          })
+          .then(rating => {
+              var totalPoints = 0;
+              var numPlayers = rating.length;
+
+              for (var i = 0; i < numPlayers; i++) {
+                  totalPoints += rating[i].assessment;
+              }
+              var avgPoints = totalPoints / numPlayers;
+
+              middleRating.append("Avarage Assessment: " + avgPoints.toFixed(2))
+          })
+          .catch(error => {
+              console.error(error);
+              alert('Error retrieving player ratings from the server.');
+          });
+  }
+  averageAssessment();
+  updateAllComments();
+  updateTopPlayers();
+  updateScore();
+  guessBejeweled();
+
+</script>
+</html>

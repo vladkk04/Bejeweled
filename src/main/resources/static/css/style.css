@@ -1,0 +1,309 @@
+body {
+    background-color: #463f3a;
+    filter: blur(0,25px);
+}
+
+.jewel-button {
+    background-color: #8a817c;
+    border: 0;
+    border-radius: 5px;
+    margin: 1px;
+    transition: opacity 0.5s ease-in-out;
+}
+.jewel-button:hover
+{
+    transform: translateY(-0.25em);
+    box-shadow: 0 0 0.4em 0em #8a817c;
+}
+
+.jewel-button:active
+{
+    background-color: #bcb8b1;
+}
+.jewel-button.hidden
+{
+    opacity: 0;
+    pointer-events: none;
+}
+
+td img {
+    max-width: 50px;
+    height: auto;
+}
+
+#headerText
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 50px;
+    margin-bottom: 20px;
+    margin-top: 0px;
+}
+
+#container
+{
+    display: inline-flex;
+    position: relative;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+#container-board
+{
+    display: flex;
+    justify-content: center;
+}
+#board-container
+{
+    display: flex;
+    justify-items: center;
+    position: relative;
+}
+
+#infoGame
+{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+}
+
+#TopPlayer
+{
+    background-color: #59534e;
+    border-radius: 5px;
+    display: flex;
+    justify-items: flex-end;
+    position: relative;
+    margin-left: 100px;
+}
+.topPlayerText
+{
+    margin: 14px;
+    color: white;
+    font-size: 25px;
+}
+
+.topScoresText
+{
+    margin: 14px;
+    color: white;
+    font-size: 25px;
+}
+
+#player
+{
+    display: inline;
+    position: relative;
+    justify-content: center;
+    justify-items: center;
+    align-self: center;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+#PLAYERS_TOP_TEXT
+{
+    font-size: 20px;
+    color: bisque;
+    margin-left: 15px;
+}
+#SCORES_TOP_TEXT
+{
+    font-size: 20px;
+    color: bisque;
+}
+#scores
+{
+    display: inline;
+    position: relative;
+    justify-content: center;
+    justify-items: center;
+    align-self: center;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+#gameScore
+{
+    font-size: 50px;
+    color: white;
+    margin: 20px;
+}
+#countdownTimer
+{
+    font-size: 50px;
+    color: white;
+    margin: 20px;
+}
+#topPlayerText
+{
+    font-size: 30px;
+    color: white;
+    margin: 20px 0px 0px 210px;
+}
+
+.container-rating h3{
+    margin-top: 50px;
+    margin-left: -1680px;
+}
+.rating {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+    margin-left: 110px;
+}
+.rating:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rating:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:50px;
+    color:#ccc;
+}
+.rating:not(:checked) > label:before {
+    content: '★ ';
+}
+.rating > input:checked ~ label {
+    color: #ffc700;
+}
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+    color: #deb217;
+}
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+
+#send_btn {
+    align-items: center;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: .25rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: rgba(0, 0, 0, 0.85);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin: 0;
+    padding: 6px;
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: auto;
+}
+
+#send_btn:hover,
+#send_btn:focus {
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+#send_btn:hover {
+    transform: translateY(-1px);
+}
+
+#send_btn:active {
+    background-color: #F0F0F1;
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
+    color: rgba(0, 0, 0, 0.65);
+    transform: translateY(0);
+}
+
+#containerCommentsAndRating
+{
+    margin-left: 490px;
+}
+textarea {
+    width: 20%;
+    height: 120px;
+    line-height: 150%;
+    max-width: 37%;
+    max-height: 18%;
+    resize: horizontal;
+    background-color: #59534e;
+    margin-bottom: 5px;
+}
+#leaveCommentText
+{
+    font-size: 20px;
+    color: white;
+}
+
+#win {
+    font-family: "Open Sans", sans-serif;
+    text-align: center;
+    margin: 40px;
+    font-size: 4rem;
+    font-weight: bold;
+    color: green;
+    text-shadow: 2px 2px #2b2300;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+#AllComments
+{
+    display: flex;
+    border-radius: 5px;
+    background-color:#59534e;
+    margin-right: 470px;
+    margin-left: 480px;
+
+    margin-top:40px ;
+}
+
+#ALL_COMMENTS_TEXT
+{
+    margin: 0;
+    padding:10px 10px 10px 10px ;
+    font-size: 25px;
+    color: white;
+}
+#AllCommentsText
+{
+    display: inline-flex;
+    font-size: 20px;
+    color: white;
+    padding: 10px;
+}
+#MiddleRating{
+    padding: 10px;
+    background: #59534e;
+    display: inline-flex;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    border-radius: 5px;
+    margin-left: 100px;
+    margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+

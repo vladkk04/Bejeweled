@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Form</title>
+    <link href="/css/userPanel.css" rel="stylesheet" />
+</head>
+<body>
+
+
+<div class="box">
+    <h1 align="center">Login</h1>
+    <form role="form" th:action="@{/login}" th:object="${player}" method="post">
+        <!-- Input fields -->
+        <div class="inputBox">
+            <input type="text" placeholder="Username" id="username" name="username" th:field="*{username}">
+            <label>Username</label>
+        </div>
+        <div class="inputBox">
+            <input type="password" placeholder="Password" id="password" name="password" th:field="*{password}">
+            <label>Password</label>
+        </div>
+
+        <input type="submit" name="login" value="Login" onclick="playLikeGuess()">
+        <a href="register" target="_self">Register</a>
+    </form>
+</div>
+<script>
+    function playLikeGuess() {
+        if (document.getElementById("username").value === "")
+        {
+            document.getElementById("username").value = null;
+        }
+    }
+</script>
+</body>
+</html>
